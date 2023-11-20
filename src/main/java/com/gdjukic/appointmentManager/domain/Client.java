@@ -14,6 +14,18 @@ public class Client extends BaseEntity {
     @OneToMany(mappedBy = "client")
     private List<Appointment> appointments = new ArrayList<>();
 
+    public static Client newClient(String email) {
+        return new Client(email, new ArrayList<>());
+    }
+
+    public Client() {
+    }
+
+    public Client(String email, List<Appointment> appointments) {
+        this.email = email;
+        this.appointments = appointments;
+    }
+
     public String getEmail() {
         return email;
     }

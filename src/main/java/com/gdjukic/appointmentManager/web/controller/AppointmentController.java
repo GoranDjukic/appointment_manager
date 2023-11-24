@@ -28,7 +28,8 @@ public class AppointmentController {
 
     @GetMapping("/date")
     public Page<AppointmentResponse> findByRange(@RequestParam LocalDate date, Pageable pageable) {
-        return appointmentService.findByDate(date,pageable).map(appointment -> new AppointmentResponse(
+        return appointmentService.findByDate(date,pageable)
+                .map(appointment -> new AppointmentResponse(
                 appointment.getId(),
                 appointment.getStartTime(),
                 appointment.getEndTime(),

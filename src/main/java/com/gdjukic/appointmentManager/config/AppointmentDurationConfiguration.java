@@ -4,8 +4,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "appointment")
-public class AppointmentConfiguration {
+@ConfigurationProperties(prefix = "appointment.duration")
+public class AppointmentDurationConfiguration {
 
     private int time;
 

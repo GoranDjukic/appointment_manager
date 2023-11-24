@@ -1,10 +1,10 @@
 package com.gdjukic.appointmentManager.exception;
 
-public class GenericBadRequestException extends RuntimeException{
+public class AppointmentTimeNotAvailableException extends RuntimeException{
 
     private final String message;
 
-    public GenericBadRequestException(String message) {
+    public AppointmentTimeNotAvailableException(String message) {
         super();
         this.message = message;
     }

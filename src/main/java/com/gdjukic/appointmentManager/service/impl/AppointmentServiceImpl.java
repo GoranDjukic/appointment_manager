@@ -1,9 +1,9 @@
 package com.gdjukic.appointmentManager.service.impl;
 
-import com.gdjukic.appointmentManager.config.AppointmentConfiguration;
+import com.gdjukic.appointmentManager.config.AppointmentDurationConfiguration;
 import com.gdjukic.appointmentManager.domain.Appointment;
 import com.gdjukic.appointmentManager.domain.Client;
-import com.gdjukic.appointmentManager.exception.GenericBadRequestException;
+import com.gdjukic.appointmentManager.exception.AppointmentTimeNotAvailableException;
 import com.gdjukic.appointmentManager.repository.AppointmentRepository;
 import com.gdjukic.appointmentManager.repository.ClientRepository;
 import com.gdjukic.appointmentManager.service.AppointmentService;
@@ -20,16 +20,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final ClientRepository clientRepository;
-    private final AppointmentConfiguration appointmentConfiguration;
+    private final AppointmentDurationConfiguration appointmentDurationConfiguration;
 
     public AppointmentServiceImpl(
             AppointmentRepository appointmentRepository,
             ClientRepository clientRepository,
-            AppointmentConfiguration appointmentConfiguration
+            AppointmentDurationConfiguration appointmentDurationConfiguration
     ) {
         this.appointmentRepository = appointmentRepository;
         this.clientRepository = clientRepository;
-        this.appointmentConfiguration = appointmentConfiguration;
+        this.appointmentDurationConfiguration = appointmentDurationConfiguration;
     }
 
     @Override
@@ -43,11 +43,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Appointment create(LocalDateTime startTime, String clientEmail) {
 
-        final LocalDateTime endTime = startTime.plusMinutes(appointmentConfiguration.getTime())
+        final LocalDateTime endTime = startTime.plusMinutes(appointmentDurationConfiguration.getTime())
                 .minusSeconds(1L);
         if (appointmentRepository.existsWithGivenRange(startTime, endTime)) {
 
-            throw new GenericBadRequestException("Appointment exists within a given time range.");
+            throw new AppointmentTimeNotAvailableException("The appointment with the given time is already taken.");
         }
         final Client client = clientRepository.findByEmail(clientEmail)
                 .orElse(clientRepository.save(Client.newClient(clientEmail)));
